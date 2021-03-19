@@ -12,6 +12,8 @@ namespace CardGameRunner
         {
             using IHost host = CreateHostBuilder(args).Build();
 
+            // What goes here?
+
             return host.RunAsync();
         }
 
@@ -23,6 +25,7 @@ namespace CardGameRunner
         static void ConfigureServices(IServiceCollection serviceCollection)
         {
             serviceCollection.ConfigureCardGameEngineDependencies();
+            serviceCollection.AddSingleton<GameRunner>(); // Does this belong?
         }
     }
 }
