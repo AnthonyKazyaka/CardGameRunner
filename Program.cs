@@ -1,7 +1,11 @@
-﻿using CardGameEngine.Configuration;
+﻿using CardGameEngine.Cards;
+using CardGameEngine.Configuration;
+using CardGameEngine.Game;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Quaranta;
+using Quaranta.Cards;
+using Quaranta.Configuration;
 
 namespace CardGameRunner
 {
@@ -16,18 +20,20 @@ namespace CardGameRunner
             var serviceProvider = collection.BuildServiceProvider();
 
             var gameRunner = serviceProvider.GetService<IGameRunner>();
+            var quarantaGame = serviceProvider.GetService<ICardGame>();
 
-            QuarantaGame quaranta = new QuarantaGame();
-
-            gameRunner.Run(quaranta);
+            gameRunner.Run(quarantaGame);
 
             serviceProvider.Dispose();
         }
 
         static void ConfigureServices(IServiceCollection serviceCollection)
         {
-            serviceCollection.ConfigureCardGameEngineDependencies();
+            serviceCollection.ConfigureQuarantaServices();
             serviceCollection.AddTransient<IGameRunner, GameRunner>();
+            serviceCollection.AddTransient<ICardGame, QuarantaGame>();
+            serviceCollection.AddTransient<IPointEvaluator, PointEvaluator>();
+
         }
     }
 }
