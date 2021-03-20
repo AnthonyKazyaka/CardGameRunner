@@ -1,21 +1,20 @@
 ﻿using CardGameEngine.Decks;
-using System;
-using System.Collections.Generic;
-using System.Text;
+using CardGameEngine.Game;
 
 namespace CardGameRunner
 {
-    public class GameRunner
+    public class GameRunner : IGameRunner
     {
-        public GameRunner(DeckType deckType, List<IDeckGenerator> deckGenerators)
+        private readonly IDeckFactory _deckFactory;
+
+        public GameRunner(IDeckFactory deckFactory)
         {
-            int i = 0;
-            i++;
+            _deckFactory = deckFactory;
         }
 
-        public void Run()
+        public void Run(ICardGame cardGame)
         {
-            Console.WriteLine("Running!");
+            cardGame.Play();
         }
     }
 }

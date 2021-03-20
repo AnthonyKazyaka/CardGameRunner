@@ -8,24 +8,24 @@ namespace CardGameRunner
 {
     class Program
     {
-        static Task Main(string[] args)
+        static void Main(string[] args)
         {
-            using IHost host = CreateHostBuilder(args).Build();
+            var collection = new ServiceCollection();
 
-            // What goes here?
+            ConfigureServices(collection);
 
-            return host.RunAsync();
+            var serviceProvider = collection.BuildServiceProvider();
+
+            var gameRunner = serviceProvider.GetService<IGameRunner>();
+            gameRunner.Run();
+
+            serviceProvider.Dispose();
         }
-
-        static IHostBuilder CreateHostBuilder(string[] args) =>
-            Host.CreateDefaultBuilder(args)
-                .ConfigureServices((_, services) =>
-                    ConfigureServices(services));
 
         static void ConfigureServices(IServiceCollection serviceCollection)
         {
             serviceCollection.ConfigureCardGameEngineDependencies();
-            serviceCollection.AddSingleton<GameRunner>(); // Does this belong?
+            serviceCollection.AddTransient<IGameRunner, GameRunner>(); // Does this belong?
         }
     }
 }
